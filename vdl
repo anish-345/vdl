@@ -1,0 +1,57 @@
+#!/bin/bash
+# vdl - Video Downloader Library CLI
+
+set -e
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+BACKEND="${VDL_BACKEND:-auto}"
+
+check_vdl() {
+    [ -f "$SCRIPT_DIR/target/debug/vdl" ] || [ -f "$SCRIPT_DIR/target/release/vdl" ]
+}
+
+check_yt_dlp() {
+    command -v yt-dlp &> /dev/null
+}
+
+get_vdl_binary() {
+    if [ -f "$SCRIPT_DIR/target/release/vdl" ]; then
+        echo "$SCRIPT_DIR/target/release/vdl"
+    else
+        echo "$SCRIPT_DIR/target/debug/vdl"
+    fi
+}
+
+run_vdl() {
+    exec "$(get_vdl_binary)" "$@"
+}
+
+run_yt_dlp() {
+    if check_yt_dlp; then
+        exec yt-dlp "$@"
+    else
+        echo "Error: yt-dlp not found. Install with: pip install yt-dlp" >&2
+        exit 1
+    fi
+}
+
+case "$BACKEND" in
+    vdl)
+        run_vdl "$@"
+        ;;
+    auto)
+        if check_yt_dlp; then
+            run_yt_dlp "$@"
+        elif check_vdl; then
+            run_vdl "$@"
+        else
+            echo "Error: No backend available. Install yt-dlp or build vdl." >&2
+            exit 1
+        fi
+        ;;
+    *)
+        echo "Unknown backend: $BACKEND" >&2
+        echo "Valid options: vdl, auto" >&2
+        exit 1
+        ;;
+esac

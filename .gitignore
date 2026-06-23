@@ -1,0 +1,30 @@
+# Binaries
+target/
+*.zip
+*.tar.gz
+
+# Build artifacts
+*.wasm
+*.exe
+*.dll
+*.so
+*.dylib
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+*.pyc
+__pycache__/
+
+# Partial downloads
+*.part
+*.ytdl
