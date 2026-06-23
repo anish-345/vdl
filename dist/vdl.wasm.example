@@ -1,0 +1,23 @@
+// VDL WebAssembly Example
+// This file shows how to use VDL in a browser
+
+async function initVDL() {
+    const vdl = await import('./vdl_bg.wasm');
+    return vdl;
+}
+
+async function downloadVideo(url, quality = 'best') {
+    const vdl = await initVDL();
+    const videoInfo = await vdl.extract_info(url);
+    const format = videoInfo.formats.find(f => f.height <= quality) || videoInfo.formats[0];
+    const videoBlob = await fetch(format.url).then(r => r.blob());
+    const videoUrl = URL.createObjectURL(videoBlob);
+    
+    const a = document.createElement('a');
+    a.href = videoUrl;
+    a.download = `${videoInfo.id}.${format.ext}`;
+    a.click();
+}
+
+// Usage:
+// downloadVideo('https://youtube.com/watch?v=XXX', 720);

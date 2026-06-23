@@ -138,7 +138,22 @@ vdl <URL> --formats
 vdl <URL> -q
 ```
 
-## 🌐 Web API
+## 🌐 Browser Extension Support
+
+### Pre-built Binaries
+Download pre-built browser binaries from [GitHub Releases](https://github.com/anish-345/vdl/releases):
+- `vdl.wasm` - WebAssembly for browsers
+- `vdl.js` - JavaScript wrapper
+- `vdl.node` - Node.js native module
+
+### Browser Integration
+```javascript
+// Download video in browser
+import { VDL } from './vdl.js';
+await VDL.download('https://youtube.com/watch?v=XXX');
+```
+
+## 🧬 Architecture
 
 VDL can be deployed as a web service for browser-based video downloading:
 
