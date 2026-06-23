@@ -1,0 +1,36 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        
+      - name: Build
+        run: |
+          cargo build --release
+          cargo build --target wasm32-unknown-unknown
+          
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: vdl-binaries
+          path: |
+            target/release/vdl
+            target/wasm32-unknown-unknown/release/vdl.wasm
+            
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            target/release/vdl
+            target/wasm32-unknown-unknown/release/vdl.wasm
+          tag_name: ${{ github.ref }}

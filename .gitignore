@@ -27,4 +27,6 @@ __pycache__/
 
 # Partial downloads
 *.part
-*.ytdl
+*.ytdldist/
+*.wasm
+*.zip
