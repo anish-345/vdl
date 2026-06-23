@@ -138,6 +138,32 @@ vdl <URL> --formats
 vdl <URL> -q
 ```
 
+## 🌐 Web API
+
+VDL can be deployed as a web service for browser-based video downloading:
+
+### API Server
+```bash
+cd api
+cargo build
+cargo run
+```
+
+**Endpoints:**
+```
+GET /download/:url    # Download video by URL
+```
+
+### Web Integration
+```javascript
+// Frontend JavaScript
+async function downloadVideo(url) {
+    const response = await fetch(`http://localhost:8080/download/${encodeURIComponent(url)}`);
+    const result = await response.json();
+    console.log(result);
+}
+```
+
 ## 🧬 Architecture
 
 ```
