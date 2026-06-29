@@ -11,6 +11,17 @@ A modular, cross-platform video downloader built with Rust.
 - **Progress Tracking** - Real-time download progress
 - **Format Selection** - Automatic or manual quality selection
 
+## 📋 Supported Platforms (5+)
+
+| Platform | Status | Extractor |
+|----------|--------|-----------|
+| **YouTube** | ✅ Active | `src/extractors/youtube/mod.rs` |
+| **Instagram** | ✅ Active | `src/extractors/instagram/mod.rs` |
+| **Twitter/X** | ✅ Active | `src/extractors/twitter/mod.rs` |
+| **Vimeo** | ✅ Active | `src/extractors/vimeo/mod.rs` |
+| **Facebook** | ✅ Active | `src/extractors/facebook/mod.rs` |
+| **Generic** | ✅ Fallback | Built-in generic extractor |
+
 ## 📦 Installation
 
 ### Prerequisites
@@ -122,20 +133,47 @@ pub fn register_extractors() -> Vec<Box<dyn Extractor>> {
 ## 📖 CLI Usage
 
 ```bash
-# Basic download
-vdl <URL>
+# Basic download (auto-detects platform)
+vdl "https://youtube.com/watch?v=..."
+vdl "https://instagram.com/p/..."
+vdl "https://twitter.com/.../status/..."
+vdl "https://vimeo.com/..."
+vdl "https://facebook.com/..."
 
-# Specify output
-vdl <URL> -o output.mp4
+# Specify output file
+vdl "https://youtube.com/watch?v=..." -o my_video.mp4
 
 # Quality selection
-vdl <URL> -q 720
+vdl "https://vimeo.com/..." -q 1080
+vdl "https://instagram.com/p/..." -q 720
 
-# List formats
-vdl <URL> --formats
+# List available formats
+vdl "https://youtube.com/watch?v=..." --list-formats
 
-# Silent mode
-vdl <URL> -q
+# Silent mode (no output)
+vdl "https://facebook.com/video" -q
+```
+
+### 🎯 Platform-Specific Examples
+
+```bash
+# YouTube
+./vdl "https://youtube.com/watch?v=dQw4w9WgXcQ"
+
+# Instagram Post
+./vdl "https://instagram.com/p/C5qK8vJvFPH/"
+
+# Instagram Story
+./vdl "https://instagram.com/stories/username/"
+
+# Twitter Video
+./vdl "https://twitter.com/user/status/123456789"
+
+# Vimeo
+./vdl "https://vimeo.com/123456789"
+
+# Facebook Video
+./vdl "https://facebook.com/video/posts/123456789"
 ```
 
 ## 🌐 Browser Extension Support
