@@ -1,0 +1,69 @@
+name: Cross-Platform Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build-all:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown, aarch64-apple-darwin, x86_64-apple-darwin, x86_64-pc-windows-gnu, aarch64-unknown-linux-gnu
+      
+      - name: Cache cargo
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/bin
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-
+      
+      - name: Build Linux x64
+        run: cargo build --release --target x86_64-unknown-linux-gnu
+        
+      - name: Build Linux ARM64
+        run: cargo build --release --target aarch64-unknown-linux-gnu
+        
+      - name: Build Android ARM64
+        run: |
+          cargo build --release --target aarch64-linux-android
+          
+      - name: Build macOS x64
+        run: cargo build --release --target x86_64-apple-darwin
+        
+      - name: Build macOS ARM64
+        run: cargo build --release --target aarch64-apple-darwin
+        
+      - name: Build Windows x64
+        run: cargo build --release --target x86_64-pc-windows-gnu
+        
+      - name: Build WebAssembly
+        run: cargo build --release --target wasm32-unknown-unknown
+        
+      - name: Upload Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            target/x86_64-unknown-linux-gnu/release/vdl
+            target/aarch64-unknown-linux-gnu/release/vdl
+            target/aarch64-linux-android/release/vdl
+            target/x86_64-apple-darwin/release/vdl
+            target/aarch64-apple-darwin/release/vdl
+            target/x86_64-pc-windows-gnu/release/vdl.exe
+            target/wasm32-unknown-unknown/release/vdl.wasm
+          tag_name: ${{ github.ref }}
+          name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
