@@ -48,32 +48,62 @@ chmod +x vdl
 
 ## 📋 Platform Support
 
-✅ **Fully Supported Platforms:**
-- YouTube
-- Instagram
-- Twitter/X
-- Vimeo
-- Facebook
+✅ **Active Extractors (5+ Platforms):**
+
+| Platform | Support Level | Features |
+|----------|---------------|----------|
+| **YouTube** | ✅ Active | Videos, Playlists, Live streams |
+| **Instagram** | ✅ Active | Posts, Reels, Stories, IGTV |
+| **Twitter/X** | ✅ Active | Videos, GIFs, Threads |
+| **Vimeo** | ✅ Active | HD videos, Privacy-protected |
+| **Facebook** | ✅ Active | Public videos, Groups |
+| **Generic** | ✅ Fallback | Any direct video URL |
 
 ---
 
 ## 🚀 Usage Examples
 
 ```bash
-# Basic download
-./vdl "https://youtube.com/watch?v=dQw4w9WgXcQ"
+# Basic download (auto-detects platform)
+./vdl "https://youtube.com/watch?v=..."
+./vdl "https://instagram.com/p/..."
+./vdl "https://twitter.com/.../status/..."
+./vdl "https://vimeo.com/..."
+./vdl "https://facebook.com/..."
 
 # Specify output file
 ./vdl "https://instagram.com/p/ABC123" -o my_video.mp4
 
 # Quality selection
-./vdl "https://twitter.com/user/status/123" -q 720
+./vdl "https://vimeo.com/123456" -q 1080
 
 # List available formats
-./vdl "https://vimeo.com/123456" --formats
+./vdl "https://youtube.com/watch?v=..." --list-formats
 
-# Silent mode
+# Silent mode (no output)
 ./vdl "https://facebook.com/video" -q
+```
+
+### 🎯 Platform-Specific Examples
+
+```bash
+# YouTube
+./vdl "https://youtube.com/watch?v=dQw4w9WgXcQ"
+
+# Instagram Post
+./vdl "https://instagram.com/p/C5qK8vJvFPH/"
+
+# Instagram Story
+./vdl "https://instagram.com/stories/username/"
+
+# Twitter Video
+./vdl "https://twitter.com/user/status/123456789"
+
+# Vimeo
+./vdl "https://vimeo.com/123456789"
+
+# Facebook Video
+./vdl "https://facebook.com/video/posts/123456789"
 ```
 
 ---
